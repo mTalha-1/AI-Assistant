@@ -1,6 +1,8 @@
 import pyttsx3
 import datetime
 import speech_recognition as sr
+import wikipedia
+import webbrowser
 
 
 engine =pyttsx3.init('sapi5')
@@ -22,22 +24,42 @@ def greeting():
     else:
         speak("Good Night!")
 
-    speak("I am your AI assistant, my name is Loki. I will perform different tasks for you. Now tell me how may I help you.")
+    speak("I am your AI assistant, my name is Jarvis. I will perform different tasks for you. Now tell me how may I help you.")
+
 def voice_commands_to_text():
     rec_class = sr.Recognizer()
     with sr.Microphone() as source:
         print("listning.....")
         rec_class.pause_threshold = 1
+        rec_class.energy_threshold = 450
         audio = rec_class.listen(source)
     try:
-        command = rec_class.recognize_google(audio,language='en-in')
-        print("User said: ",audio,"\n" )
+        print("Recognizing")
+        command = rec_class.recognize_google(audio,language ='en-in')
+        print("User said: ",command,"\n" )
     except Exception as e:
         print(e)
         print("Please say your command again!")
         return "None"
     return command
 
+
 if __name__ == "__main__":
-    greeting()
-    voice_commands_to_text()
+    # greeting()
+    while True:
+        command  = voice_commands_to_text().lower()
+        if 'wikipedia' in command:
+            speak('Searching wikipedia')
+            command = command.replace('wikipedia','')
+            results = wikipedia.summary(command, sentences = 2)
+            speak('According to wikipedia!')
+            print(results)
+            speak(results)
+        elif 'open google' in command:
+            webbrowser.open('google.com')
+        elif 'open youtube ' in command:
+            webbrowser.open('https://www.youtube.com/')
+        elif 'in youtube' in command:
+            se = command.split(' in ')[0]
+            webbrowser.open(f'https://www.youtube.com/results?search_query={se}')
+        
