@@ -31,8 +31,7 @@ def voice_commands_to_text():
     rec_class = sr.Recognizer()
     with sr.Microphone() as source:
         print("listning.....")
-        rec_class.pause_threshold = 0.5
-        rec_class.energy_threshold = 450
+        rec_class.pause_threshold = 1
         audio = rec_class.listen(source)
     try:
         print("Recognizing")
@@ -71,4 +70,7 @@ if __name__ == "__main__":
         
         elif 'open code' in command:
             Path = "C:\\Microsoft VS Code\\Code.exe"
+            os.startfile(Path)
+        elif 'open word' in command:
+            Path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Word.lnk"
             os.startfile(Path)
